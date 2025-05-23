@@ -4,24 +4,19 @@ fn main(){
 
 
 fn reverse(x: i32) -> i32{
-    if x > std::i32::MAX || x < std::i32::MIN {return 0;}
-let val = x;
-let mut result: Vec<char> = vec![];
-let mut sign = false;
-for i in val.to_string().chars(){
-    if i == '-'{
-        sign = true;
-        continue;
+    let mut val = x;
+    let mut result = 0;
+    while val != 0{
+        let temp = val % 10;
+        val  /= 10;
+        if result > i32::MAX / 10 || (result == i32::MAX / 10 && temp > 7) {
+            return 0;
+        }
+        if result < i32::MIN / 10 || (result == i32::MIN / 10 && temp < -8) {
+            return 0;
+        }
+        result = result*10 + temp;
     }
-    result.push(i);
-}
-let mut result_value: i32 = 0;
-for j in 0..result.len(){
-    let digit = result[j].to_digit(10).unwrap() as i32;
-    result_value += digit * i32::pow(10, j as u32);
-}
-if sign{
-    result_value = result_value * -1;
-}
-return result_value;
+
+    return result;
 }
